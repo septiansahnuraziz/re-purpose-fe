@@ -59,57 +59,96 @@ export default function Home() {
     );
   };
 
-  // Generation handler simulation with realistic model latency & staged pipeline
-  const handleGenerate = () => {
+  // ===========================================================================
+  // 🔗 [TITIK INTEGRASI API #2]: GENERASI KONTEN MULTI-PLATFORM (LLM ENGINE)
+  // Endpoint: POST /api/content/generate (atau SSE streaming)
+  // Payload: { rawText: string, tone: ToneId, audience: string }
+  // Response: { success: boolean, data: PlatformOutputs }
+  // Fungsi Client: apiGenerateContent(...) di src/lib/api.ts
+  // ===========================================================================
+  const handleGenerate = async () => {
     if (isGenerating) return;
 
     setIsGenerating(true);
     setGeneratingStep("Membaca pesan utama & sudut pandang...");
 
-    setTimeout(() => {
-      setGeneratingStep("Menata format khusus tiap sosmed...");
-    }, 600);
+    try {
+      // TODO: Ganti simulasi di bawah dengan pemanggilan API nyata:
+      // const res = await apiGenerateContent({
+      //   rawText,
+      //   tone: selectedTone,
+      //   audience: selectedAudience,
+      // });
+      // setOutputs(res.data);
 
-    setTimeout(() => {
-      const basePreset = PRESETS_DATA[selectedTone];
-      const wordCount = rawText.trim() ? rawText.trim().split(/\s+/).length : 0;
+      setTimeout(() => {
+        setGeneratingStep("Menata format khusus tiap sosmed...");
+      }, 600);
 
-      // Dynamically reflect current words and compute random realistic tokens/latency
-      const updatedOutputs: PlatformOutputs = {
-        ...basePreset,
-        telemetry: {
-          ...basePreset.telemetry,
-          wordCount: wordCount > 0 ? wordCount : basePreset.telemetry.wordCount,
-          latency: `${(1.1 + Math.random() * 0.4).toFixed(2)} dtk`,
-          tokens: `${Math.floor(750 + Math.random() * 200)} Token`,
-        },
-      };
+      setTimeout(() => {
+        const basePreset = PRESETS_DATA[selectedTone];
+        const wordCount = rawText.trim() ? rawText.trim().split(/\s+/).length : 0;
 
-      setOutputs(updatedOutputs);
+        // Dynamically reflect current words and compute random realistic tokens/latency
+        const updatedOutputs: PlatformOutputs = {
+          ...basePreset,
+          telemetry: {
+            ...basePreset.telemetry,
+            wordCount: wordCount > 0 ? wordCount : basePreset.telemetry.wordCount,
+            latency: `${(1.1 + Math.random() * 0.4).toFixed(2)} dtk`,
+            tokens: `${Math.floor(750 + Math.random() * 200)} Token`,
+          },
+        };
+
+        setOutputs(updatedOutputs);
+        setIsGenerating(false);
+        triggerToast("✨ 15+ Konten Medsos berhasil diracik!");
+      }, 1200);
+    } catch (err) {
+      console.error("Gagal melakukan generasi konten:", err);
       setIsGenerating(false);
-      triggerToast("✨ 15+ Konten Medsos berhasil diracik!");
-    }, 1200);
+      triggerToast("❌ Gagal memproses konten. Coba beberapa saat lagi.");
+    }
   };
 
-  // Reroll handler
-  const handleReroll = () => {
+  // ===========================================================================
+  // 🔗 [TITIK INTEGRASI API #3]: ACAK ULANG VARIASI KONTEN (REROLL)
+  // Endpoint: POST /api/content/reroll
+  // Payload: { rawText: string, tone: ToneId, audience: string }
+  // Response: { success: boolean, data: PlatformOutputs }
+  // Fungsi Client: apiRerollContent(...) di src/lib/api.ts
+  // ===========================================================================
+  const handleReroll = async () => {
     if (isGenerating) return;
     setIsGenerating(true);
     setGeneratingStep("Meracik variasi sudut pandang baru...");
 
-    setTimeout(() => {
-      const basePreset = PRESETS_DATA[selectedTone];
-      setOutputs({
-        ...basePreset,
-        telemetry: {
-          ...basePreset.telemetry,
-          latency: `${(1.0 + Math.random() * 0.3).toFixed(2)} dtk`,
-          tokens: `${Math.floor(800 + Math.random() * 150)} Token`,
-        },
-      });
+    try {
+      // TODO: Ganti simulasi di bawah dengan pemanggilan API nyata:
+      // const res = await apiRerollContent({
+      //   rawText,
+      //   tone: selectedTone,
+      //   audience: selectedAudience,
+      // });
+      // setOutputs(res.data);
+
+      setTimeout(() => {
+        const basePreset = PRESETS_DATA[selectedTone];
+        setOutputs({
+          ...basePreset,
+          telemetry: {
+            ...basePreset.telemetry,
+            latency: `${(1.0 + Math.random() * 0.3).toFixed(2)} dtk`,
+            tokens: `${Math.floor(800 + Math.random() * 150)} Token`,
+          },
+        });
+        setIsGenerating(false);
+        triggerToast("✨ Variasi konten baru siap dipakai!");
+      }, 850);
+    } catch (err) {
+      console.error("Gagal mengacak ulang variasi:", err);
       setIsGenerating(false);
-      triggerToast("✨ Variasi konten baru siap dipakai!");
-    }, 850);
+    }
   };
 
   return (

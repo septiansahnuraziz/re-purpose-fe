@@ -33,13 +33,25 @@ export const Navbar: React.FC = () => {
 
         {/* Status Pill & User Profile */}
         <div className="flex items-center gap-3">
+          {/* ===================================================================
+              🔗 [TITIK INTEGRASI API #4]: STATUS LAYANAN & MODEL ENGINE
+              Endpoint: GET /api/system/status
+              Untuk mengecek apakah engine Claude/GPT-4o standby atau mengalami latency/gangguan
+              Fungsi Client: apiGetSystemStatus() di src/lib/api.ts
+          =================================================================== */}
           <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>AI Engine Aktif</span>
           </div>
 
+          {/* ===================================================================
+              🔗 [TITIK INTEGRASI API #5]: DATA PENGGUNA & STATUS TIER LANGGANAN
+              Endpoint: GET /api/user/me
+              Untuk memuat avatar, nama, sisa kredit harian/bulanan, dan status tier (PRO/FREE)
+              Fungsi Client: apiGetUserProfile() di src/lib/api.ts
+          =================================================================== */}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-sky-400 p-0.5 ring-2 ring-slate-200 shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-sky-400 p-0.5 ring-2 ring-slate-200 shadow-sm cursor-pointer hover:ring-indigo-300 transition-all">
               <div className="w-full h-full rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-semibold">
                 RP
               </div>

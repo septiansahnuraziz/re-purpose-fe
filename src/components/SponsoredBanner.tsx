@@ -26,11 +26,20 @@ export const SponsoredBanner: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+        {/* ===================================================================
+            🔗 [TITIK INTEGRASI API #6 (OPSIONAL)]: ANALITIK KLIK SPONSOR / PARTNER
+            Endpoint: POST /api/analytics/sponsor-click
+            Payload: { sponsorId: "supascale-01", event: "click", timestamp: ISOString }
+        =================================================================== */}
         <a
           className="px-3 py-1.5 rounded-lg bg-white border border-indigo-200 hover:border-indigo-300 text-indigo-700 hover:bg-indigo-50/50 text-xs sm:text-sm font-medium transition-all flex items-center gap-1 shadow-sm group"
           href="#sponsor"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            // Contoh pemanggilan tracker:
+            // navigator.sendBeacon('/api/analytics/sponsor-click', JSON.stringify({ sponsorId: 'supascale' }));
+          }}
         >
           <span>Coba Gratis 14 Hari</span>
           <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5 text-indigo-600">

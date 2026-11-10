@@ -36,6 +36,11 @@ export const Footer: React.FC = () => {
             >
               Ketentuan Layanan
             </a>
+            {/* ===================================================================
+                🔗 [TITIK INTEGRASI API #4 (LANJUTAN)]: SISTEM API & STATUS SERVER
+                Endpoint: GET /api/system/status
+                Data ini bisa di-fetch secara periodik (misal polling tiap 60s)
+            =================================================================== */}
             <div className="flex items-center gap-1.5 text-slate-700">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Semua Sistem Normal</span>

@@ -34,17 +34,34 @@ export const WorkbenchInput: React.FC<WorkbenchInputProps> = ({
   const wordCount = rawText.trim() ? rawText.trim().split(/\s+/).length : 0;
   const isOptimalDensity = wordCount >= 150;
 
-  // Handle URL Extraction Simulation
-  const handleExtractUrl = () => {
+  // ===========================================================================
+  // 🔗 [TITIK INTEGRASI API #1]: EKSTRAKSI KONTEN DARI URL
+  // Endpoint: POST /api/content/extract-url
+  // Payload: { url: string }
+  // Response: { success: boolean, title: string, content: string, wordCount: number }
+  // Fungsi Client: apiExtractUrl(urlInput) di src/lib/api.ts
+  // ===========================================================================
+  const handleExtractUrl = async () => {
     if (!urlInput.trim()) return;
     setIsExtractingUrl(true);
-    setTimeout(() => {
-      setRawText(
-        `[Artikel Diambil dari: ${urlInput}]\n\nMembangun Monopoli Personal di Era AI:\nDi tengah maraknya konten instan berbasis AI, batas antara opini umum dan keahlian sejati semakin kentara. Mengandalkan tips generik kini jadi strategi yang cepat usang. Para kreator dengan retensi tertinggi beralih ke formulasi vertikal mikro yang menggabungkan 2 atau 3 keahlian berbeda menjadi satu positioning yang tak tergantikan.`
-      );
+
+    try {
+      // TODO: Ganti simulasi di bawah dengan pemanggilan API nyata:
+      // const res = await apiExtractUrl(urlInput);
+      // setRawText(res.content);
+
+      // --- SIMULASI FALLBACK (SAAT INI) ---
+      setTimeout(() => {
+        setRawText(
+          `[Artikel Diambil dari: ${urlInput}]\n\nMembangun Monopoli Personal di Era AI:\nDi tengah maraknya konten instan berbasis AI, batas antara opini umum dan keahlian sejati semakin kentara. Mengandalkan tips generik kini jadi strategi yang cepat usang. Para kreator dengan retensi tertinggi beralih ke formulasi vertikal mikro yang menggabungkan 2 atau 3 keahlian berbeda menjadi satu positioning yang tak tergantikan.`
+        );
+        setIsExtractingUrl(false);
+        setActiveTab("text");
+      }, 800);
+    } catch (err) {
+      console.error("Gagal mengekstrak URL:", err);
       setIsExtractingUrl(false);
-      setActiveTab("text");
-    }, 800);
+    }
   };
 
   // Keyboard shortcut listener for Cmd/Ctrl + Enter
